@@ -12,7 +12,7 @@ int lowerBound(int n, int x)
 {
 	int low, mid, hig;
 	low = 0;
-	hig = n;
+	hig = n-1;
 	while (low < hig)
 	{
 		mid = (low + hig) / 2;
@@ -42,7 +42,7 @@ int main()
 	{
 		scanf("%d", &x);
 		flag = lowerBound(n, x);
-		if (arrN[flag] == x && flag < n)
+		if (arrN[flag] == x)
 			printf("%d\n", 1);
 		else
 			printf("%d\n", 0);
