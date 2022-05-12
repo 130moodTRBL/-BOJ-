@@ -6,7 +6,7 @@
 int n, m;
 int arr[8] = { 0, };
 int flag[9] = { 0, };
-void recursive(int level)
+void recursive(int level, int num)
 {
 	int i;
 	if (level == m)
@@ -19,29 +19,15 @@ void recursive(int level)
 		return;
 	}
 
-	for (i = 0; i < n; i++)
+	for (i = num; i < n; i++)
 	{
-		if (level != 0)
+		if (flag[i + 1] == 0)
 		{
-			if (flag[i + 1] == 0 && arr[level - 1] < i + 1)
-			{
-				arr[level] = i + 1;
-				flag[i + 1] = 1;
-				recursive(level + 1);
-				arr[level] = 0;
-				flag[i + 1] = 0;
-			}
-		}
-		else
-		{
-			if (flag[i + 1] == 0)
-			{
-				arr[level] = i + 1;
-				flag[i + 1] = 1;
-				recursive(level + 1);
-				arr[level] = 0;
-				flag[i + 1] = 0;
-			}
+			arr[level] = i + 1;
+			flag[i + 1] = 1;
+			recursive(level + 1, i+1);
+			arr[level] = 0;
+			flag[i + 1] = 0;
 		}
 	}
 
@@ -50,7 +36,7 @@ void recursive(int level)
 int main()
 {
 	scanf("%d %d", &n, &m);
-	recursive(0);
+	recursive(0, 0);
 
 	return 0;
 }
