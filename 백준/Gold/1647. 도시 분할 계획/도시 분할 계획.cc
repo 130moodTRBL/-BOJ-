@@ -1,42 +1,67 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <cstdio>
 #include <iostream>
+#include <stdlib.h>
+#include <algorithm>
 #include <vector>
+#include <string>
+#include <string.h>
+#include <stack>
 #include <queue>
-using namespace std;
-bool check[100001];
+#include <utility>
+#include <cmath>
+#include <map>
+#include <tuple>
 
-int main(void) {
-	ios::sync_with_stdio(false);
+#define endl '\n'
+
+using namespace std;
+
+vector<pair<int, int>> arr[1000001];
+vector<int> ans;
+priority_queue<tuple<int, int>, vector<tuple<int, int>>, greater<tuple<int, int>>> que;
+int vis[1000001];
+
+int main()
+{
+	ios::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
+
 	int n, m;
+	int a, b, c;
+	int temp = -1;
+	long long sum = 0;
 	cin >> n >> m;
-	vector<vector<pair<int,int>>>v(n + 1);
 	for (int i = 0; i < m; i++) {
-		int x, y, z;
-		cin >> x >> y >> z;
-		v[x].push_back(make_pair(y, z));
-		v[y].push_back(make_pair(x, z));
+		cin >> a >> b >> c;
+		arr[a].push_back({ c,b });
+		arr[b].push_back({ c,a });
 	}
 
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>q;
-	q.push(make_pair(0,1));
-	int maxcost = -1;
-	int ans = 0;
-	while (!q.empty()) {
-		int fd = q.top().first;
-		int fx = q.top().second;
-		q.pop();
-		if (check[fx])	continue;
-		check[fx] = true;
-		if (maxcost < fd)	maxcost = fd;
-		ans += fd;
-		for (int k = 0; k < v[fx].size(); k++) {
-			int nx = v[fx][k].first;
-			int cost = v[fx][k].second;
-			q.push(make_pair(cost, nx));			
+	vis[1] = 1;
+	for (int i = 0; i < arr[1].size(); i++) {
+		que.push({ arr[1][i].first,arr[1][i].second });
+	}
+
+	int dis, x;
+	while (!que.empty())
+	{
+		tie(dis, x) = que.top();
+		que.pop();
+		if (vis[x]) {
+			continue;
+		}
+		vis[x] = 1;
+		sum += dis;
+		temp = max(temp, dis);
+		for (int i = 0; i < arr[x].size(); i++) {
+			que.push({ arr[x][i].first,arr[x][i].second });
 		}
 	}
-	ans -= maxcost;
-	cout << ans << '\n';
+	cout << sum - temp;
+
+
+
 	return 0;
 }
