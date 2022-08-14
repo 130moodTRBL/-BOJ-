@@ -10,39 +10,48 @@
 #include <queue>
 #include <utility>
 #include <cmath>
+#include <map>
+#include <unordered_map>
 
 #define endl '\n'
-
 using namespace std;
 
-int adj[5011][5011];
-int vis[5011];
-int cnt[5011];
-int sum[5011];
-
+vector<int> edge[501];
+int cnt[501];
+int vis[501];
+int sum[501];
+vector<pair<int, int>> arr;
 int n, m;
 
-void bfs(int root)
+void sol(int num)
 {
 	queue<int> que;
-	que.push(root);
+	que.push(num);
 	while (!que.empty())
 	{
 		int cur = que.front();
 		que.pop();
-		for (int i = 1; i <= n; i++) {
-			if (adj[cur][i] == 1 && vis[i] != 1) {
-				vis[i] = 1;
-				que.push(i);
-				cnt[i] = cnt[cur] + 1;
+		for (auto next : edge[cur]) {
+			if (vis[next]) {
+				continue;
 			}
+			vis[next] = 1;
+			que.push(next);
+			cnt[next] = cnt[cur] + 1;
 		}
 	}
 
 	for (int i = 1; i <= n; i++) {
-		sum[root] += cnt[i];
+		sum[num] += cnt[i];
 	}
-	sum[root] -= cnt[root];
+}
+
+void fill()
+{
+	for (int i = 0; i <= n; i++) {
+		vis[i] = 0;
+		cnt[i] = 0;
+	}
 }
 
 int main()
@@ -52,28 +61,29 @@ int main()
 	cout.tie(0);
 
 	int a, b;
-	int temp = 0;
-	int min = 99999;
 	cin >> n >> m;
 	for (int i = 0; i < m; i++) {
 		cin >> a >> b;
-		adj[a][b] = 1;
-		adj[b][a] = 1;
+		edge[a].push_back(b);
+		edge[b].push_back(a);
 	}
 
 	for (int i = 1; i <= n; i++) {
-		bfs(i);
-		memset(vis, 0, sizeof(vis));
-		memset(cnt, 0, sizeof(cnt));
+		fill();
+		sol(i);
 	}
+	int ans = 999999999;
+	int temp;
 	for (int i = 1; i <= n; i++) {
-		if (sum[i] < min) {
-			min = sum[i];
+		if (ans > sum[i]) {
+			ans = sum[i];
 			temp = i;
 		}
 	}
 	cout << temp;
 	
+
+
 
 	return 0;
 }
