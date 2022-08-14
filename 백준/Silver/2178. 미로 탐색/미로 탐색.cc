@@ -2,36 +2,36 @@
 #include <cstdio>
 #include <iostream>
 #include <stdlib.h>
-#include <stdio.h>
 #include <algorithm>
-#include <cmath>
+#include <vector>
 #include <string>
 #include <string.h>
-#include <queue>
 #include <stack>
+#include <queue>
+#include <utility>
+#include <cmath>
+#include <map>
+#include <unordered_map>
 
-#define X first
-#define Y second
-
+#define endl '\n'
 using namespace std;
 
-char board[502][502];
-bool vis[502][502];
-int dis[502][502];
-int dx[4] = { 1,0,-1,0 };
-int dy[4] = { 0,1,0,-1 };
+char board[101][101];
+int vis[101][101];
+int dis[101][101];
+int dx[] = { 0,1,0,-1 };
+int dy[] = { 1,0,-1,0 };
 
 int main()
 {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
+	cout.tie(0);
 
 	int n, m;
-	int i, j;
-	
 	cin >> n >> m;
-	for (i = 0; i < n; i++) {
-		for (j = 0; j < m; j++) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
 			cin >> board[i][j];
 		}
 	}
@@ -40,28 +40,28 @@ int main()
 	que.push({ 0,0 });
 	vis[0][0] = 1;
 	dis[0][0] = 1;
-
 	while (!que.empty())
 	{
 		pair<int, int> cur = que.front();
 		que.pop();
 		for (int dir = 0; dir < 4; dir++) {
-			int nx = cur.X + dx[dir];
-			int ny = cur.Y + dy[dir];
+			int nx = dx[dir] + cur.first;
+			int ny = dy[dir] + cur.second;
 			if (nx < 0 || nx >= n || ny < 0 || ny >= m) {
 				continue;
 			}
-			if (vis[nx][ny] || board[nx][ny] != '1') {
+			if (board[nx][ny] == '0' || vis[nx][ny]) {
 				continue;
 			}
-			dis[nx][ny] = dis[cur.X][cur.Y] + 1;
-			vis[nx][ny] = 1;
 			que.push({ nx,ny });
+			vis[nx][ny] = 1;
+			dis[nx][ny] = dis[cur.first][cur.second] + 1;
 		}
 	}
-	cout << dis[n - 1][m - 1] << endl;
+	cout << dis[n - 1][m - 1];
 
-	
+
+
 
 	return 0;
 }
