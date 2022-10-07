@@ -57,7 +57,6 @@ int main()
 	int n, m;
 	int a, b;
 	int ans = 0;
-	int check = 0;
 	cin >> n >> m;
 
 	for (int i = 0; i <= n; i++) {
@@ -66,7 +65,7 @@ int main()
 
 	for (int i = 1; i <= m; i++) {
 		cin >> a >> b;
-		if (find(a, b) && check == 0) {
+		if (find(a, b)) {
 			ans = i;
 			break;
 		}
